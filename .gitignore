@@ -1,0 +1,26 @@
+# ---- Build output ----
+bin/
+obj/
+publish/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+*.user
+*.suo
+.vs/
+
+# ---- Personal config / secrets (never publish) ----
+config.json
+config.ini
+*.log
+tray_on.ico
+tray_off.ico
+appsettings.*.json
+secrets.json
+*.token
+
+# ---- OS / editor ----
+Thumbs.db
+.DS_Store
+*.swp

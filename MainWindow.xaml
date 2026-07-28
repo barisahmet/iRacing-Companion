@@ -1,0 +1,91 @@
+<ui:FluentWindow x:Class="IRacingSmartPlug.MainWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                 xmlns:vm="clr-namespace:IRacingSmartPlug.ViewModels"
+                 Title="iRacing Companion"
+                 Width="940" Height="660" MinWidth="840" MinHeight="580"
+                 ExtendsContentIntoTitleBar="True"
+                 WindowBackdropType="Mica"
+                 WindowCornerPreference="Round"
+                 WindowStartupLocation="CenterScreen"
+                 Background="{DynamicResource ApplicationBackgroundBrush}"
+                 Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+                 FontFamily="Segoe UI Variable Text, Segoe UI"
+                 d:DataContext="{d:DesignInstance vm:MainViewModel}"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 mc:Ignorable="d"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+
+    <ui:TitleBar Grid.Row="0" Title="iRacing Companion" Height="34" />
+
+    <Grid Grid.Row="1">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="216" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+
+      <!-- Sidebar -->
+      <Border Grid.Column="0" Padding="12,2,12,12">
+        <DockPanel>
+          <!-- footer -->
+          <StackPanel DockPanel.Dock="Bottom">
+            <Border Height="1" Background="{DynamicResource CardStrokeColorDefaultBrush}"
+                    Margin="4,6,4,10" />
+            <StackPanel Orientation="Horizontal" Margin="6,0,4,10">
+              <Ellipse Width="9" Height="9" VerticalAlignment="Center"
+                       Fill="{Binding Dashboard.HaState, Converter={StaticResource HaBrush}}" />
+              <TextBlock Text="{Binding Dashboard.HaStatusText}" Margin="8,0,0,0"
+                         VerticalAlignment="Center" FontSize="12"
+                         Foreground="{DynamicResource TextFillColorSecondaryBrush}" />
+            </StackPanel>
+            <ui:Button Content="Quit" Appearance="Secondary"
+                       HorizontalAlignment="Stretch" Click="QuitButton_Click" />
+          </StackPanel>
+
+          <!-- nav -->
+          <StackPanel DockPanel.Dock="Top" Margin="0,10,0,0">
+            <ListBox Style="{StaticResource NavList}"
+                     ItemContainerStyle="{StaticResource NavItem}"
+                     SelectedValuePath="Tag"
+                     SelectedValue="{Binding SelectedTag, Mode=TwoWay}">
+              <ListBoxItem Tag="dashboard">
+                <StackPanel Orientation="Horizontal">
+                  <ui:SymbolIcon Symbol="Home24" FontSize="18" />
+                  <TextBlock Text="Dashboard" Margin="14,0,0,0" FontSize="14" VerticalAlignment="Center" />
+                </StackPanel>
+              </ListBoxItem>
+              <ListBoxItem Tag="apps">
+                <StackPanel Orientation="Horizontal">
+                  <ui:SymbolIcon Symbol="Apps24" FontSize="18" />
+                  <TextBlock Text="Apps" Margin="14,0,0,0" FontSize="14" VerticalAlignment="Center" />
+                </StackPanel>
+              </ListBoxItem>
+              <ListBoxItem Tag="settings">
+                <StackPanel Orientation="Horizontal">
+                  <ui:SymbolIcon Symbol="Settings24" FontSize="18" />
+                  <TextBlock Text="Settings" Margin="14,0,0,0" FontSize="14" VerticalAlignment="Center" />
+                </StackPanel>
+              </ListBoxItem>
+              <ListBoxItem Tag="logs">
+                <StackPanel Orientation="Horizontal">
+                  <ui:SymbolIcon Symbol="TextBulletListLtr24" FontSize="18" />
+                  <TextBlock Text="Logs" Margin="14,0,0,0" FontSize="14" VerticalAlignment="Center" />
+                </StackPanel>
+              </ListBoxItem>
+            </ListBox>
+          </StackPanel>
+        </DockPanel>
+      </Border>
+
+      <!-- Content -->
+      <ContentControl Grid.Column="1" Content="{Binding CurrentPage}" Margin="6,0,14,10" />
+    </Grid>
+  </Grid>
+</ui:FluentWindow>

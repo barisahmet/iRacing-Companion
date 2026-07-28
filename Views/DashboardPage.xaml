@@ -1,0 +1,106 @@
+<UserControl x:Class="IRacingSmartPlug.Views.DashboardPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             xmlns:vm="clr-namespace:IRacingSmartPlug.ViewModels"
+             d:DataContext="{d:DesignInstance vm:DashboardViewModel}"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
+  <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="20,6,20,18">
+    <StackPanel>
+      <TextBlock Text="Dashboard" Style="{StaticResource PageTitle}" Margin="2,8,0,16" />
+
+      <!-- ===== Hero: plug power ===== -->
+      <ui:Card Padding="22,20" Margin="0,0,0,12">
+        <Grid>
+          <StackPanel Orientation="Horizontal">
+            <Border Width="54" Height="54" CornerRadius="27" VerticalAlignment="Center"
+                    Background="{DynamicResource SubtleFillColorSecondaryBrush}">
+              <ui:SymbolIcon Symbol="Power24" FontSize="27"
+                             HorizontalAlignment="Center" VerticalAlignment="Center"
+                             Foreground="{Binding PlugCode, Converter={StaticResource PlugBrush}}" />
+            </Border>
+            <StackPanel Margin="18,0,0,0" VerticalAlignment="Center">
+              <TextBlock Text="Plug power" Style="{StaticResource CardCaption}" Margin="0,0,0,3" />
+              <TextBlock Text="{Binding PlugStateText}" FontSize="24" FontWeight="SemiBold"
+                         Foreground="{Binding PlugCode, Converter={StaticResource PlugBrush}}" />
+            </StackPanel>
+          </StackPanel>
+          <ui:ToggleSwitch HorizontalAlignment="Right" VerticalAlignment="Center"
+                           IsChecked="{Binding PlugOn, Mode=TwoWay}" />
+        </Grid>
+      </ui:Card>
+
+      <!-- ===== Status tiles ===== -->
+      <Grid Margin="0,0,0,12">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <ui:Card Grid.Column="0" Padding="16,15" Margin="0,0,5,0">
+          <StackPanel>
+            <StackPanel Orientation="Horizontal">
+              <Ellipse Width="9" Height="9" VerticalAlignment="Center"
+                       Fill="{Binding UiActive, Converter={StaticResource RunDotBrush}}" />
+              <TextBlock Text="iRacing UI" Margin="9,0,0,0"
+                         Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="12.5" />
+            </StackPanel>
+            <TextBlock Text="{Binding UiStateText}" FontSize="17" FontWeight="SemiBold"
+                       Margin="0,9,0,0" />
+          </StackPanel>
+        </ui:Card>
+
+        <ui:Card Grid.Column="1" Padding="16,15" Margin="5,0,5,0">
+          <StackPanel>
+            <StackPanel Orientation="Horizontal">
+              <Ellipse Width="9" Height="9" VerticalAlignment="Center"
+                       Fill="{Binding SimActive, Converter={StaticResource RunDotBrush}}" />
+              <TextBlock Text="Simulator" Margin="9,0,0,0"
+                         Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="12.5" />
+            </StackPanel>
+            <TextBlock Text="{Binding SimStateText}" FontSize="17" FontWeight="SemiBold"
+                       Margin="0,9,0,0" />
+          </StackPanel>
+        </ui:Card>
+
+        <ui:Card Grid.Column="2" Padding="16,15" Margin="5,0,0,0">
+          <StackPanel>
+            <StackPanel Orientation="Horizontal">
+              <Ellipse Width="9" Height="9" VerticalAlignment="Center"
+                       Fill="{Binding HaState, Converter={StaticResource HaBrush}}" />
+              <TextBlock Text="Home Assistant" Margin="9,0,0,0"
+                         Foreground="{DynamicResource TextFillColorSecondaryBrush}" FontSize="12.5" />
+            </StackPanel>
+            <TextBlock Text="{Binding HaStatusText}" FontSize="17" FontWeight="SemiBold"
+                       Margin="0,9,0,0" />
+          </StackPanel>
+        </ui:Card>
+      </Grid>
+
+      <!-- ===== Apps summary ===== -->
+      <ui:Card Padding="20,16">
+        <Grid>
+          <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <Border Width="40" Height="40" CornerRadius="10" VerticalAlignment="Center"
+                    Background="{DynamicResource SubtleFillColorSecondaryBrush}">
+              <ui:SymbolIcon Symbol="Apps24" FontSize="20"
+                             HorizontalAlignment="Center" VerticalAlignment="Center"
+                             Foreground="{DynamicResource AccentTextFillColorPrimaryBrush}" />
+            </Border>
+            <StackPanel Margin="14,0,0,0" VerticalAlignment="Center">
+              <TextBlock Text="Companion apps" Style="{StaticResource CardTitle}" />
+              <TextBlock Text="{Binding AppsSummary}" Style="{StaticResource CardCaption}" />
+            </StackPanel>
+          </StackPanel>
+          <ui:Button Content="Manage" HorizontalAlignment="Right" VerticalAlignment="Center"
+                     Command="{Binding DataContext.NavigateCommand,
+                               RelativeSource={RelativeSource AncestorType=Window}}"
+                     CommandParameter="apps" />
+        </Grid>
+      </ui:Card>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>
