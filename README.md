@@ -1,32 +1,35 @@
 # iRacing Companion
 
-A native Windows (WPF / .NET 10) tray utility for sim racing:
+A small Windows tray app for sim racing, written in WPF on .NET 10.
 
-- **Smart plug automation** — turns a Home Assistant switch **on** when iRacing launches and **off** a configurable delay after it closes.
-- **Companion app launcher** — starts apps like Sound Shift, JoyToKey, or RaceLab automatically, each with its own trigger (iRacing UI vs. on-track simulator), arguments, and "start minimized" option.
-- **Fluent UI** — Windows 11 dark theme, lives in the system tray, single instance, run-at-login, remembers its window size.
+What it does:
 
-## Build
+- Turns a Home Assistant smart plug on when iRacing starts, and off a little while after it closes. The off delay is configurable.
+- Starts companion apps automatically (Sound Shift, JoyToKey, RaceLab, whatever you use). Each one can launch when the iRacing UI opens or when the sim actually goes on track, and you can pass it arguments or start it minimized.
+- Sits in the system tray with a Windows 11 dark theme. It's single instance, can start with Windows, and remembers its window size.
 
-Requires the [.NET 10 SDK](https://dotnet.microsoft.com/download).
+## Building
 
-```powershell
-# run locally
+You need the .NET 10 SDK.
+
+Run it locally:
+
+```
 dotnet run
-
-# self-contained single exe (x64)
-dotnet publish IRacingSmartPlug.csproj -c Release -r win-x64 --self-contained true `
-  -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o publish
 ```
 
-The published `publish/iRacingCompanion.exe` runs standalone (no .NET install needed).
+Build a single self-contained x64 exe:
 
-## Releases
+```
+dotnet publish IRacingSmartPlug.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o publish
+```
 
-Every push to `main` builds the x64 exe via GitHub Actions (see the **Actions** tab → artifacts).
-Pushing a `v*` tag additionally attaches the exe to a GitHub Release.
+The resulting publish/iRacingCompanion.exe runs on its own, without .NET installed.
 
-## Configuration
+## Downloads
 
-Settings live in `%APPDATA%\iRacingSmartPlug\config.json` (not tracked in git). Configure Home
-Assistant, behavior, and companion apps from the app's **Settings** and **Apps** pages.
+Every push to main builds the x64 exe on GitHub Actions, so you can grab it from the Actions tab under the run artifacts. Pushing a tag that starts with v (like v1.0) also attaches the exe to a GitHub release.
+
+## Config
+
+Settings are stored in %APPDATA%\iRacingSmartPlug\config.json, which is not committed to the repo. You set up Home Assistant, the behavior options and your companion apps from the Settings and Apps pages in the app.
