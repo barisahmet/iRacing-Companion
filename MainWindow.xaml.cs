@@ -51,32 +51,32 @@ public partial class MainWindow : FluentWindow
     private void SaveBounds()
     {
         var w = _config.Current.Window;
-        if (WindowState == WindowState.Maximized)
+        // Normal -> current bounds; Minimized/Maximized -> the restored (normal) bounds.
+        var r = WindowState == WindowState.Normal
+            ? new Rect(Left, Top, ActualWidth, ActualHeight)
+            : RestoreBounds;
+        if (r.Width > 0 && r.Height > 0)
         {
-            var r = RestoreBounds; // the normal (un-maximized) size
-            if (r.Width > 0 && r.Height > 0)
-            {
-                w.Width = r.Width;
-                w.Height = r.Height;
-                w.Left = r.Left;
-                w.Top = r.Top;
-            }
-            w.Maximized = true;
+            w.Width = r.Width;
+            w.Height = r.Height;
+            w.Left = r.Left;
+            w.Top = r.Top;
         }
-        else if (WindowState == WindowState.Normal && ActualWidth > 0 && ActualHeight > 0)
-        {
-            w.Width = ActualWidth;
-            w.Height = ActualHeight;
-            w.Left = Left;
-            w.Top = Top;
-            w.Maximized = false;
-        }
+        w.Maximized = WindowState == WindowState.Maximized;
         _config.Save();
     }
 
     private void QuitButton_Click(object sender, RoutedEventArgs e)
     {
         ((App)Application.Current).ExitApplication();
+    }
+
+    // Minimize to tray: hide the window instead of showing it on the taskbar.
+    protected override void OnStateChanged(EventArgs e)
+    {
+        if (WindowState == WindowState.Minimized)
+            Hide();
+        base.OnStateChanged(e);
     }
 
     protected override void OnClosing(CancelEventArgs e)

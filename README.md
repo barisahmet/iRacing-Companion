@@ -6,7 +6,24 @@ What it does:
 
 - Turns a Home Assistant smart plug on when iRacing starts, and off a little while after it closes. The off delay is configurable.
 - Starts companion apps automatically (Sound Shift, JoyToKey, RaceLab, whatever you use). Each one can launch when the iRacing UI opens or when the sim actually goes on track, and you can pass it arguments or start it minimized.
-- Sits in the system tray with a Windows 11 dark theme. It's single instance, can start with Windows, and remembers its window size.
+- Sits in the system tray with a Windows 11 dark theme. It's single instance, can start with Windows, minimizes and closes to the tray, and remembers its window size.
+
+## Screenshots
+
+Dashboard:
+
+![Dashboard](docs/screenshots/dashboard.png)
+
+Apps:
+
+![Apps](docs/screenshots/apps.png)
+
+## Downloads
+
+Every push to main builds the app on GitHub Actions. You can grab the exe from the Actions tab under the run artifacts, or from a release if a version tag was pushed. There are two builds:
+
+- `iRacingCompanion.exe` is small, but it needs the .NET 10 Desktop Runtime installed on the machine (a one time install from Microsoft).
+- `iRacingCompanion-portable.exe` is bigger but fully self contained, so it runs on any Windows x64 machine with nothing installed.
 
 ## Building
 
@@ -18,17 +35,17 @@ Run it locally:
 dotnet run
 ```
 
-Build a single self-contained x64 exe:
+Build the framework-dependent exe (needs the runtime):
+
+```
+dotnet publish IRacingSmartPlug.csproj -c Release -r win-x64 --self-contained false -p:PublishSingleFile=true -o publish
+```
+
+Build the portable, self-contained exe:
 
 ```
 dotnet publish IRacingSmartPlug.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o publish
 ```
-
-The resulting publish/iRacingCompanion.exe runs on its own, without .NET installed.
-
-## Downloads
-
-Every push to main builds the x64 exe on GitHub Actions, so you can grab it from the Actions tab under the run artifacts. Pushing a tag that starts with v (like v1.0) also attaches the exe to a GitHub release.
 
 ## Config
 
